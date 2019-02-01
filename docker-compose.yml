@@ -1,0 +1,23 @@
+version: '3.7'
+
+services:
+  node_6:
+    build:
+      context: .
+      args:
+        NODE_VERSION: ${NODE_VERSION:-6.16.0}
+    image: chromium_headless_node:${NODE_VERSION:-6.16.0}
+
+  node_8:
+    build:
+      context: .
+      args:
+        NODE_VERSION: ${NODE_VERSION:-8.15.0}
+    image: chromium_headless_node:${NODE_VERSION:-8.15.0}
+
+  node_10:
+    build:
+      context: .
+      args:
+        NODE_VERSION: ${NODE_VERSION:-10.15.1}
+    image: chromium_headless_node:${NODE_VERSION:-10.15.1}
