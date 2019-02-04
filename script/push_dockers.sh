@@ -19,7 +19,5 @@ do
   if [[ "$CIRCLE_BRANCH" = "master" ]]
   then
     docker push quay.io/nyulibraries/$BASE_IMAGE-chromium_$CHROMIUM_VERSION
-    short_version=`echo $version | sed -e 's/\..$//g' | sed -e 's/\..-/-/g'`
-    docker push quay.io/nyulibraries/chromium_headless_node:$short_version-chromium_$CHROMIUM_VERSION
   fi
 done
