@@ -2,9 +2,12 @@
 
 for version in 6.16.0 8.15.0 10.15.1
 do
+  patch_version=`echo -n $version | sed -e 's/\..$//g'`
+  major_version=`echo -n $version | sed -e 's/\.\S*//g'`
   BASE_IMAGE=chromium_headless_node:$version
   docker tag $BASE_IMAGE quay.io/nyulibraries/$BASE_IMAGE-chromium_latest
-  CHROMIUM_VERSION=$(docker-compose run $BASE_IMAGE chromium-browser --version | cut -d " " -f 2 )
+  # grabs version number from Chromium installation
+  CHROMIUM_VERSION=$(docker-compose run node_$major_version chromium-browser --version | sed 's/[[:alpha:]|(|[:space:]]//g')
   docker tag $BASE_IMAGE quay.io/nyulibraries/$BASE_IMAGE-chromium_$CHROMIUM_VERSION-${CIRCLE_BRANCH//\//_}
   docker tag $BASE_IMAGE quay.io/nyulibraries/$BASE_IMAGE-chromium_$CHROMIUM_VERSION-${CIRCLE_BRANCH//\//_}-${CIRCLE_SHA1}
   if [[ "$CIRCLE_BRANCH" = "master" ]]
