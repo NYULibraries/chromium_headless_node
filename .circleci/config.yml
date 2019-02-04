@@ -8,18 +8,18 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
+          name: Authenticate docker
+          command: |
+            docker login -u "$QUAY_USERNAME" --password "$QUAY_PASSWORD" quay.io
+      - run:
           name: Pull images (if available)
           command: |
-            ./script/pull_dockers.sh; exit 0
+            ./script/pull_dockers.sh || exit 0
       - run:
           name: Build images
           command: |
             export BRANCH_NO_SLASH=${CIRCLE_BRANCH//\//_}
             docker-compose build
-      - run:
-          name: Authenticate docker
-          command: |
-            docker login -u "$QUAY_USERNAME" --password "$QUAY_PASSWORD" quay.io
       - run:
           name: Push images
           command: |
