@@ -6,8 +6,8 @@ do
   patch_version=`echo -n $version | sed 's/\..$//g'`
   major_version=`echo -n $version | sed 's/\.\S*//g'`
   # grabs version number from Node & Chromium installations, stripping extraneous text
-  NODE_VERSION=`docker-compose run node_$major_version node --version | sed -e 's/v//' -e 's/\r$//'`
-  CHROMIUM_VERSION=`docker-compose run node_$major_version chromium-browser --version | sed -e 's/Chromium //' -e 's/ \r$//'`
+  NODE_VERSION=`docker run alpine/semver semver -c $(docker-compose run node_$major_version node --version)`
+  CHROMIUM_VERSION=`docker run alpine/semver semver -c docker-compose run node_$major_version chromium-browser --version`
 
   # TAG COMMANDS
   docker tag $BASE_IMAGE quay.io/nyulibraries/$NODE_VERSION-chromium_latest
