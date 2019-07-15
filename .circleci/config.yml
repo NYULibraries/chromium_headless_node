@@ -33,7 +33,7 @@ workflows:
   run_daily:
     triggers:
     - schedule:
-        chron: "0 2 * * *"
+        cron: "0 2 * * *"
         filters:
           branches:
             only:
