@@ -5,7 +5,7 @@ FROM node:${NODE_VERSION}-alpine
 RUN echo @edge http://nl.alpinelinux.org/alpine/edge/community >> /etc/apk/repositories \
   && echo @edge http://nl.alpinelinux.org/alpine/edge/main >> /etc/apk/repositories \
   && apk add --no-cache \
-  chromium@edge \
+  chromium \
   harfbuzz@edge \
   nss@edge \
   && rm -rf /var/cache/*
