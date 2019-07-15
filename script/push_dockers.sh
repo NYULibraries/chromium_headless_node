@@ -3,11 +3,11 @@
 for version in 8 10 12
 do
   BASE_IMAGE=chromium_headless_node:$version
-  patch_version=`echo -n $version | sed -e 's/\..$//g'`
-  major_version=`echo -n $version | sed -e 's/\.\S*//g'`
+  patch_version=`echo -n $version | sed 's/\..$//g'`
+  major_version=`echo -n $version | sed 's/\.\S*//g'`
   # grabs version number from Node & Chromium installations, stripping extraneous text
-  NODE_VERSION=`docker-compose run node_$major_version node --version | sed -e 's/v//'`
-  CHROMIUM_VERSION=`docker-compose run node_$major_version chromium-browser --version | sed -e 's/Chromium //'`
+  NODE_VERSION=`docker-compose run node_$major_version node --version | sed -e 's/v//' -e 's/\r$//'`
+  CHROMIUM_VERSION=`docker-compose run node_$major_version chromium-browser --version | sed -e 's/Chromium //' -e 's/ ?\r$//'`
 
   # TAG COMMANDS
   docker tag $BASE_IMAGE quay.io/nyulibraries/$NODE_VERSION-chromium_latest
