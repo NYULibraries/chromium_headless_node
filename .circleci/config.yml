@@ -24,3 +24,19 @@ jobs:
           name: Push images
           command: |
             ./script/push_dockers.sh
+
+workflows:
+  version: 2
+  build-and-push:
+    jobs:
+    - build
+  run_daily:
+    triggers:
+    - schedule:
+        chron: "0 2 * * *"
+        filters:
+          branches:
+            only:
+            - master
+    jobs:
+    - build
