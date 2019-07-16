@@ -12,10 +12,6 @@ jobs:
           command: |
             docker login -u "$QUAY_USERNAME" --password "$QUAY_PASSWORD" quay.io
       - run:
-          name: Pull images (if available)
-          command: |
-            ./script/pull_dockers.sh || exit 0
-      - run:
           name: Build images
           command: |
             export BRANCH_NO_SLASH=${CIRCLE_BRANCH//\//_}
