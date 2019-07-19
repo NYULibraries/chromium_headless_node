@@ -23,7 +23,8 @@ do
     tags="$tags $NODE_VERSION-chromium_latest"
     tags="$tags $NODE_VERSION-chromium_$CHROMIUM_VERSION"
 
-    do for tag in $tags
+    for tag in $tags
+    do
       docker tag $BASE_IMAGE quay.io/nyulibraries/chromium_headless_node:$tag
       docker push quay.io/nyulibraries/chromium_headless_node:$tag
     done
