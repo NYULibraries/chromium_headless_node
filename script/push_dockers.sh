@@ -3,13 +3,12 @@
 for version in 8 10 12
 do
   BASE_IMAGE=chromium_headless_node:$version
-  patch_version=`echo -n $version | sed 's/\..$//g'`
-  major_version=`echo -n $version | sed 's/\.\S*//g'`
   # grabs version number from Node & Chromium installations, stripping extraneous text
-  NODE_VERSION=`docker run alpine/semver semver -c $(docker-compose run node_$major_version node --version)`
-  CHROMIUM_VERSION=`docker run alpine/semver semver -c $(docker-compose run node_$major_version chromium-browser --version)`
+  NODE_VERSION=`docker run alpine/semver semver -c $(docker-compose run node_$version node --version)`
+  CHROMIUM_VERSION=`docker run alpine/semver semver -c $(docker-compose run node_$version chromium-browser --version)`
 
   # TAG COMMANDS
+  docker tag $BASE_IMAGE quay.io/nyulibraries/chromium_headless_node:$version-chromium_latest
   docker tag $BASE_IMAGE quay.io/nyulibraries/chromium_headless_node:$NODE_VERSION-chromium_latest
   docker tag $BASE_IMAGE quay.io/nyulibraries/chromium_headless_node:$NODE_VERSION-chromium_$CHROMIUM_VERSION-${CIRCLE_BRANCH//\//_}
   docker tag $BASE_IMAGE quay.io/nyulibraries/chromium_headless_node:$NODE_VERSION-chromium_$CHROMIUM_VERSION-${CIRCLE_BRANCH//\//_}-${CIRCLE_SHA1}
