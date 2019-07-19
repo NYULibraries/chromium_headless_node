@@ -7,22 +7,25 @@ do
   NODE_VERSION=`docker run alpine/semver semver -c $(docker-compose run node_$version node --version)`
   CHROMIUM_VERSION=`docker run alpine/semver semver -c $(docker-compose run node_$version chromium-browser --version)`
 
-  # TAG COMMANDS
-  docker tag $BASE_IMAGE quay.io/nyulibraries/chromium_headless_node:$version-chromium_latest
-  docker tag $BASE_IMAGE quay.io/nyulibraries/chromium_headless_node:$NODE_VERSION-chromium_latest
-  docker tag $BASE_IMAGE quay.io/nyulibraries/chromium_headless_node:$NODE_VERSION-chromium_$CHROMIUM_VERSION-${CIRCLE_BRANCH//\//_}
-  docker tag $BASE_IMAGE quay.io/nyulibraries/chromium_headless_node:$NODE_VERSION-chromium_$CHROMIUM_VERSION-${CIRCLE_BRANCH//\//_}-${CIRCLE_SHA1}
+  # Make tags
+  tags="$tags $NODE_VERSION-chromium_$CHROMIUM_VERSION-${CIRCLE_BRANCH//\//_}"
+  tags="$tags $NODE_VERSION-chromium_$CHROMIUM_VERSION-${CIRCLE_BRANCH//\//_}-$CIRCLE_SHA1"
 
-  # PUSH COMMANDS
-  docker push quay.io/nyulibraries/chromium_headless_node:$NODE_VERSION-chromium_latest
-  docker push quay.io/nyulibraries/chromium_headless_node:$NODE_VERSION-chromium_$CHROMIUM_VERSION-${CIRCLE_BRANCH//\//_}
-  docker push quay.io/nyulibraries/chromium_headless_node:$NODE_VERSION-chromium_$CHROMIUM_VERSION-${CIRCLE_BRANCH//\//_}-${CIRCLE_SHA1}
+  for tag in $tags
+  do
+    docker tag $BASE_IMAGE quay.io/nyulibraries/chromium_headless_node:$tag
+    docker push quay.io/nyulibraries/chromium_headless_node:$tag
+  done
 
   if [[ $CIRCLE_BRANCH == master ]]
   then
-    # TAG
-    docker tag $BASE_IMAGE quay.io/nyulibraries/chromium_headless_node:$NODE_VERSION-chromium_$CHROMIUM_VERSION
-    # PUSH
-    docker push quay.io/nyulibraries/chromium_headless_node:$NODE_VERSION-chromium_$CHROMIUM_VERSION
+    tags="$version-chromium_latest"
+    tags="$tags $NODE_VERSION-chromium_latest"
+    tags="$tags $NODE_VERSION-chromium_$CHROMIUM_VERSION"
+
+    do for tag in $tags
+      docker tag $BASE_IMAGE quay.io/nyulibraries/chromium_headless_node:$tag
+      docker push quay.io/nyulibraries/chromium_headless_node:$tag
+    done
   fi
 done
