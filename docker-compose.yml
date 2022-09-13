@@ -21,3 +21,10 @@ services:
       args:
         NODE_VERSION: ${NODE_VERSION:-12}
     image: chromium_headless_node:12
+
+  node_14:
+    build:
+      context: .
+      args:
+        NODE_VERSION: ${NODE_VERSION:-14}
+    image: chromium_headless_node:14
