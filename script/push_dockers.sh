@@ -1,6 +1,6 @@
 #!/bin/sh -ex
 
-for version in 8 10 12 14
+for version in 12 14
 do
   BASE_IMAGE=chromium_headless_node:$version
   # grabs version number from Node & Chromium installations, stripping extraneous text
