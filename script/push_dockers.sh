@@ -8,7 +8,7 @@ do
   CHROMIUM_VERSION=`docker run alpine/semver semver -c $(docker-compose run node_$version chromium-browser --version)`
 
   # Make tags
-  tags="$tags $NODE_VERSION-chromium_$CHROMIUM_VERSION-${CIRCLE_BRANCH//\//_}"
+  tags="$NODE_VERSION-chromium_$CHROMIUM_VERSION-${CIRCLE_BRANCH//\//_}"
   tags="$tags $NODE_VERSION-chromium_$CHROMIUM_VERSION-${CIRCLE_BRANCH//\//_}-$CIRCLE_SHA1"
 
   for tag in $tags
