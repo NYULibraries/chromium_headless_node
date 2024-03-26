@@ -1,4 +1,4 @@
-for i in 12 14
+for i in 16 18 20
 do
   SERVICE=alpine_node_${i}
   docker-compose build ${SERVICE}
